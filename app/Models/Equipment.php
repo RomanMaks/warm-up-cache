@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $engine       Двигатель
  * @property int $power           Мощность
  * @property string $transmission Коробка
- * @property string $drive        Привод
+ * @property string $wheel_drive  Привод
  * @property array $options       Опции
  * @property Carbon $created_at Дата и время создания
  * @property Carbon $updated_at Дата и время обновления
@@ -24,13 +25,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Equipment extends Eloquent
 {
+    use HasFactory;
+
+    protected $table = 'equipments';
+
     protected $fillable = [
         'model_id',
         'name',
         'engine',
         'power',
         'transmission',
-        'drive',
+        'wheel_drive',
         'options',
     ];
 

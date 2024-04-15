@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
-<!-- Active URL: https://sql.toad.cz/? -->
+<!-- Active URL: https://sql.toad.cz/ -->
 <sql>
     <datatypes db="mysql">
         <group label="Numeric" color="rgb(238,238,170)">
@@ -121,7 +121,7 @@
             <datatype>VARCHAR</datatype>
             <comment>Коробка передач</comment>
         </row>
-        <row name="drive" null="0" autoincrement="0">
+        <row name="wheel_drive" null="0" autoincrement="0">
             <datatype>VARCHAR</datatype>
             <comment>Привод</comment>
         </row>

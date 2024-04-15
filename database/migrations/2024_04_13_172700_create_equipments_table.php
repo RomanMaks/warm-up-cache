@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('engine')->default('');
             $table->unsignedInteger('power')->default(0);
             $table->string('transmission')->default('');
-            $table->string('drive')->default('');
+            $table->string('wheel_drive')->default('');
             $table->json('options');
             $table->timestamps();
         });

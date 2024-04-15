@@ -7,7 +7,7 @@
 ### Разработка
 
 Компоненты:
-`php 8.2`
+`php 8.3`
 `mysql 8`
 `composer 2`
 `docker`
@@ -17,3 +17,5 @@
 Сборка проекта:
 1. Скопировать и перименовать файл `.env.example` в `.env`
 2. `make setup`
+
+> В поставщике `AppServiceProvider` заменить `StubServiceCarConnector` реальным коннектором

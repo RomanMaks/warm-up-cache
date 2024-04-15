@@ -1,5 +1,5 @@
 # Install project
-setup: build up composer-install
+setup: build up composer-install migrate seed
 	docker compose exec app php artisan key:generate
 
 build:
