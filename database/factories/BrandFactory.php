@@ -28,11 +28,6 @@ class BrandFactory extends Factory
         $count = fake()->randomNumber(1, 3);
 
         return $this
-            ->afterMaking(fn (Brand $brand) => Model::factory($count)
-                ->make([
-                    'brand_id' => $brand->id,
-                ])
-            )
             ->afterCreating(fn (Brand $brand) => Model::factory($count)
                 ->create([
                     'brand_id' => $brand->id,

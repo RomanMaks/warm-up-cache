@@ -18,4 +18,4 @@
 1. Скопировать и перименовать файл `.env.example` в `.env`
 2. `make setup`
 
-> В поставщике `AppServiceProvider` заменить `StubServiceCarConnector` реальным коннектором
+> В поставщике `AppServiceProvider` заменить `StubApiServiceCarRepository` реальным получение данных по API

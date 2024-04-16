@@ -30,11 +30,6 @@ class ModelFactory extends Factory
         $count = fake()->randomNumber(1, 3);
 
         return $this
-            ->afterMaking(fn (Model $model) => Equipment::factory($count)
-                ->make([
-                    'model_id' => $model->id,
-                ])
-            )
             ->afterCreating(fn (Model $model) => Equipment::factory($count)
                 ->create([
                     'model_id' => $model->id,
