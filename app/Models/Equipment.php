@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,5 +50,13 @@ class Equipment extends Eloquent
     public function model(): BelongsTo
     {
         return $this->belongsTo(Model::class);
+    }
+
+    public function scopeWhereBrandAndModel(Builder $query, string $brandName, string $modelName): Builder
+    {
+        return $query->whereIn('model_id', Model::query()
+            ->select('id')
+            ->where('name', $modelName)
+            ->whereBrandName($brandName));
     }
 }

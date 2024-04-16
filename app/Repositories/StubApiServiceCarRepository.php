@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Connections\HttpConnectorInterface;
+//use App\Connections\HttpConnectorInterface;
 use App\Models\Brand;
 use App\Models\Equipment;
 use App\Models\Model;
@@ -24,9 +24,9 @@ class StubApiServiceCarRepository implements CarsInterface
         ],
     ];
 
-    public function __construct(private HttpConnectorInterface $connector)
-    {
-    }
+//    public function __construct(private HttpConnectorInterface $connector)
+//    {
+//    }
 
     public function listOfSale(): array
     {

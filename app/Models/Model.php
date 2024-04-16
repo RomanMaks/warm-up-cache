@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as Eloquent;
@@ -46,5 +47,12 @@ class Model extends Eloquent
     public function equipments(): HasMany
     {
         return $this->hasMany(Equipment::class);
+    }
+
+    public function scopeWhereBrandName(Builder $query, string $name): Builder
+    {
+        return $query->whereIn('brand_id', Brand::query()
+            ->select('id')
+            ->where('name', $name));
     }
 }
