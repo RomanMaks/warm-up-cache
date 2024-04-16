@@ -60,6 +60,7 @@ class WarmUpCacheService
                 if (!$equipment) {
                     /** @var Equipment $equipment */
                     $equipment = Equipment::create([
+                        'model_id' => $provenModels[$keyModel],
                         'name' => $car['equipment'],
                         'engine' => $car['engine'],
                         'power' => $car['power'],
@@ -96,7 +97,7 @@ class WarmUpCacheService
                 Car::create([
                     'brand_id' => $provenBrands[$keyBrand],
                     'model_id' => $provenModels[$keyModel],
-                    'equipment' => $provenEquipments[$keyEquipment],
+                    'equipment_id' => $provenEquipments[$keyEquipment],
                     'vin' => $car['vin'],
                     'price' => $car['price'],
                 ]);
@@ -110,9 +111,6 @@ class WarmUpCacheService
                 $isNecessaryUpdateCache = true;
             }
         }
-
-        // Если данные отличаются, необходимо обновить информацию в базе данных
-        // MySQL и прогреть кеш Redis.
 
         if ($isNecessaryUpdateCache) {
             $cars = Car::with(['brand', 'model', 'equipment'])
