@@ -6,7 +6,7 @@ use App\Models\Brand;
 use App\Models\Car;
 use App\Models\Equipment;
 use App\Models\Model;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Str;
 
 class WarmUpCacheService
@@ -19,8 +19,6 @@ class WarmUpCacheService
 
         $provenEquipments = [];
 
-        $isNecessaryUpdateCache = false;
-
         foreach ($cars as $car) {
             $keyBrand = $car['brand'];
 
@@ -30,6 +28,10 @@ class WarmUpCacheService
                     ['name' => $car['brand']],
                     ['slug' => Str::slug($car['brand'])]
                 );
+
+                if (!Redis::hExists('brands', 'brand:' . $brand->id)) {
+                    Redis::hSet('brands', 'brand:' . $brand->id, json_encode($brand->toArray()));
+                }
 
                 $provenBrands[$keyBrand] = $brand->id;
             }
@@ -46,6 +48,10 @@ class WarmUpCacheService
                             'slug' => Str::slug($car['model'])
                         ]
                     );
+
+                if (!Redis::hExists('models', 'model:' . $model->id)) {
+                    Redis::hSet('models', 'model:' . $model->id, json_encode($model->toArray()));
+                }
 
                 $provenModels[$keyModel] = $model->id;
             }
@@ -68,8 +74,6 @@ class WarmUpCacheService
                         'wheel_drive' => $car['drive'],
                         'options' => $car['options'],
                     ]);
-
-                    $isNecessaryUpdateCache = true;
                 } elseif (
                     $equipment->engine != $car['engine'] ||
                     $equipment->power != $car['equipment'] ||
@@ -83,8 +87,10 @@ class WarmUpCacheService
                         'wheel_drive' => $car['drive'],
                         'options' => $car['options'],
                     ]);
+                }
 
-                    $isNecessaryUpdateCache = true;
+                if (!Redis::hExists('equipments', 'equipment:' . $equipment->id)) {
+                    Redis::hSet('equipments', 'equipment:' . $equipment->id, json_encode($equipment->toArray()));
                 }
 
                 $provenEquipments[$keyEquipment] = $equipment->id;
@@ -94,7 +100,7 @@ class WarmUpCacheService
             $existCar = Car::firstWhere('vin', $car['vin']);
 
             if (!$existCar) {
-                Car::create([
+                $car = Car::create([
                     'brand_id' => $provenBrands[$keyBrand],
                     'model_id' => $provenModels[$keyModel],
                     'equipment_id' => $provenEquipments[$keyEquipment],
@@ -102,22 +108,14 @@ class WarmUpCacheService
                     'price' => $car['price'],
                 ]);
 
-                $isNecessaryUpdateCache = true;
+                Redis::hSet('cars', 'car:' . $car->id, json_encode($car->toArray()));
             } elseif ($existCar->price !== $car['price']) {
                 $existCar->update([
                     'price' => $car['price'],
                 ]);
 
-                $isNecessaryUpdateCache = true;
+                Redis::hSet('cars', 'car:' . $existCar->id, json_encode($existCar->toArray()));
             }
-        }
-
-        if ($isNecessaryUpdateCache) {
-            $cars = Car::with(['brand', 'model', 'equipment'])
-                ->get()
-                ->toArray();
-
-            Cache::forever('cars', $cars);
         }
     }
 }
