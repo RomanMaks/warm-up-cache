@@ -29,8 +29,8 @@ class WarmUpCacheService
                     ['slug' => Str::slug($car['brand'])]
                 );
 
-                if (!Redis::hExists('brands', 'brand:' . $brand->id)) {
-                    Redis::hSet('brands', 'brand:' . $brand->id, json_encode($brand->toArray()));
+                if (!Redis::hExists('brands', $brand->id)) {
+                    Redis::hSet('brands', $brand->id, json_encode($brand->toArray()));
                 }
 
                 $provenBrands[$keyBrand] = $brand->id;
@@ -49,8 +49,8 @@ class WarmUpCacheService
                         ]
                     );
 
-                if (!Redis::hExists('models', 'model:' . $model->id)) {
-                    Redis::hSet('models', 'model:' . $model->id, json_encode($model->toArray()));
+                if (!Redis::hExists('models', $model->id)) {
+                    Redis::hSet('models', $model->id, json_encode($model->toArray()));
                 }
 
                 $provenModels[$keyModel] = $model->id;
@@ -89,8 +89,8 @@ class WarmUpCacheService
                     ]);
                 }
 
-                if (!Redis::hExists('equipments', 'equipment:' . $equipment->id)) {
-                    Redis::hSet('equipments', 'equipment:' . $equipment->id, json_encode($equipment->toArray()));
+                if (!Redis::hExists('equipments', $equipment->id)) {
+                    Redis::hSet('equipments', $equipment->id, json_encode($equipment->toArray()));
                 }
 
                 $provenEquipments[$keyEquipment] = $equipment->id;
@@ -108,13 +108,13 @@ class WarmUpCacheService
                     'price' => $car['price'],
                 ]);
 
-                Redis::hSet('cars', 'car:' . $car->id, json_encode($car->toArray()));
+                Redis::hSet('cars', $car->id, json_encode($car->toArray()));
             } elseif ($existCar->price !== $car['price']) {
                 $existCar->update([
                     'price' => $car['price'],
                 ]);
 
-                Redis::hSet('cars', 'car:' . $existCar->id, json_encode($existCar->toArray()));
+                Redis::hSet('cars', $existCar->id, json_encode($existCar->toArray()));
             }
         }
     }

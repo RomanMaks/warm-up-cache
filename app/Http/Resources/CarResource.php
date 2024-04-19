@@ -16,9 +16,9 @@ class CarResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'brand' => json_decode(Redis::hGet('brands', 'brand:' . $this->brand_id)),
-            'model' => json_decode(Redis::hGet('models', 'model:' . $this->model_id)),
-            'equipment' => json_decode(Redis::hGet('equipments', 'equipment:' . $this->equipment_id)),
+            'brand' => json_decode(Redis::hGet('brands', $this->brand_id)),
+            'model' => json_decode(Redis::hGet('models', $this->model_id)),
+            'equipment' => json_decode(Redis::hGet('equipments', $this->equipment_id)),
             'vin' => $this->vin,
             'price' => $this->price,
         ];
